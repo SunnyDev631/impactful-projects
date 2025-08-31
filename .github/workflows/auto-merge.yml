@@ -8,6 +8,7 @@ on:
 
 jobs:
   auto-pr:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -16,16 +17,6 @@ jobs:
       - name: Make a change
         run: |
           echo "Updated at $(date)" >> auto-update.txt
-
-      # - name: Commit changes
-      #   run: |
-      #     git config user.name "github-actions[bot]"
-      #     git config user.email "github-actions[bot]@users.noreply.github.com"
-      #     branch="auto-update-$(date +%s)"
-      #     git checkout -b $branch
-      #     git add .
-      #     git commit -m "chore: auto update"
-      #     git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:$branch
 
       - name: Create Pull Request
         id: cpr
@@ -45,7 +36,6 @@ jobs:
           pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
 
       - name: Merge PR
-        uses: pascalgn/automerge-action@v0.15.6
+        run: gh pr merge ${{ steps.cpr.outputs.pull-request-number }} --squash --admin --delete-branch
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PULL_REQUEST: ${{ steps.cpr.outputs.pull-request-number }}
+          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
