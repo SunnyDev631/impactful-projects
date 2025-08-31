@@ -38,4 +38,4 @@ jobs:
       - name: Merge PR
         run: gh pr merge ${{ steps.cpr.outputs.pull-request-number }} --squash --admin --delete-branch
         env:
-          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
