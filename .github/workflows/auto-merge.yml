@@ -2,11 +2,11 @@ name: Auto Merge
 
 on:
   schedule:
-    - cron: "18 11 * * *"     # every day at 00:00 UTC
-    - cron: "19 11 * * *"     # every day at 00:00 UTC
-    - cron: "20 11 * * *"     # every day at 00:00 UTC
-    # - cron: "0 12 * * *"    # every day at 12:00 UTC
-    # - cron: "0 9 * * 1-5"   # every weekday at 09:00 UTC
+    - cron: "0 12 * * 1-5"     # every weekday (Mon–Fri) at 12:00 UTC
+    - cron: "0 12 * * 1-2"     # every Monday & Tuesday at 12:00 UTC
+    - cron: "0 12 11 * *"      # every 11th of the month at 12:00 UTC
+    - cron: "0 12 18 * *"      # every 18th of the month at 12:00 UTC
+    - cron: "0 12 20 * *"      # every 20th of the month at 12:00 UTC
   workflow_dispatch:
   push:
     branches:
