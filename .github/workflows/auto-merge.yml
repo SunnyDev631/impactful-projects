@@ -28,8 +28,11 @@ jobs:
       #     git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:$branch
 
       - name: Create Pull Request
+        id: cpr
         uses: peter-evans/create-pull-request@v6
         with:
+          commit-message: "chore: auto update"
+          branch: "auto-update-${{ github.run_id }}"
           token: ${{ secrets.GITHUB_TOKEN }}
           title: "Auto Update"
           body: "This PR was created automatically."
@@ -39,8 +42,10 @@ jobs:
         uses: hmarr/auto-approve-action@v3
         with:
           github-token: ${{ secrets.BOT_TOKEN }} # Bot PAT here
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
 
       - name: Merge PR
         uses: pascalgn/automerge-action@v0.15.6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST: ${{ steps.cpr.outputs.pull-request-number }}
